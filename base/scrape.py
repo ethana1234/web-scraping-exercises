@@ -1,5 +1,4 @@
-import requests, argparse, transaction
-from ZODB import DB, FileStorage
+import requests, argparse
 from bs4 import BeautifulSoup
 
 HEADERS = ({
@@ -16,26 +15,16 @@ HEADERS = ({
 })
 
 
-class Scraper(object):
-    def __init__(self, db=None):
-        self.HEADERS = HEADERS
-        self.webpage_text = None
-        self.webpage_soup = None
-        self.db = DB(db) # DB is in memory if None
+def get_html_data(URL=None):
+    # Default parser, gets url from cmdline arg
+    parser = argparse.ArgumentParser(description="Scraper Args.")
+    parser.add_argument("--url", required=False, action="store", type=str, help="URL to scrape")
+    args = parser.parse_args()
 
-        # Default parser, gets url from cmdline arg
-        self.parser = argparse.ArgumentParser(description="Scraper Args.")
-        self.parser.add_argument("--url", required=False, action="store", type=str, help="URL to scrape")
-        args = self.parser.parse_args()
-
-        # If a URL was passed via cmdline, use it here
-        self.URL = args.url
-
-
-    def get_html_data(self, URL=None):
-        if URL is None:
-            # Use optional URL argument if it was passed, otherwise use the scrapers default URL (from arg)
-            URL = self.URL
-        page = requests.get(URL, headers=self.HEADERS)
-        self.webpage_text = page.text
-        self.webpage_soup = BeautifulSoup(page.content, "lxml")
+    if URL is None:
+        # Use optional URL argument if it was passed, otherwise use the URL from arg
+        URL = args.url
+    page = requests.get(URL, headers=HEADERS)
+    webpage_text = page.text
+    webpage_soup = BeautifulSoup(page.content, "lxml")
+    return webpage_soup
