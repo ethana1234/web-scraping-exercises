@@ -1,6 +1,6 @@
 from ZODB import DB
-from base.scrape import get_html_data
-from .amazonProduct import AmazonProduct
+from base.Scrape import get_html_data
+from .AmazonProduct import AmazonProduct
 
 def add_product(db=None, URL=None):
     db = DB(db) # DB is in memory if None

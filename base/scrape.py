@@ -15,16 +15,8 @@ HEADERS = ({
 })
 
 
-def get_html_data(URL=None):
-    # Default parser, gets url from cmdline arg
-    parser = argparse.ArgumentParser(description="Scraper Args.")
-    parser.add_argument("--url", required=False, action="store", type=str, help="URL to scrape")
-    args = parser.parse_args()
-
-    if URL is None:
-        # Use optional URL argument if it was passed, otherwise use the URL from arg
-        URL = args.url
-    page = requests.get(URL, headers=HEADERS)
+def get_html_data(URL, verify=None):
+    page = requests.get(URL, headers=HEADERS, verify=verify)
     webpage_text = page.text
     webpage_soup = BeautifulSoup(page.content, "lxml")
     return webpage_soup

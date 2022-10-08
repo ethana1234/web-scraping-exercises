@@ -1,4 +1,4 @@
-from amazon.amazonScrape import add_product
+from amazon.AmazonScrape import add_product
 
 
 if __name__ == "__main__":
